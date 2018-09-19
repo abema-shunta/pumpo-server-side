@@ -5,62 +5,110 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Welcome to Firebase Hosting</title>
 
-    <!-- update the version number as needed -->
-    <script defer src="/__/firebase/5.5.0/firebase-app.js"></script>
-    <!-- include only the Firebase features as you need -->
-    <script defer src="/__/firebase/5.5.0/firebase-auth.js"></script>
-    <script defer src="/__/firebase/5.5.0/firebase-database.js"></script>
-    <script defer src="/__/firebase/5.5.0/firebase-messaging.js"></script>
-    <script defer src="/__/firebase/5.5.0/firebase-storage.js"></script>
-    <!-- initialize the SDK after all desired features are loaded -->
-    <script defer src="/__/firebase/init.js"></script>
-
+    <link href="https://fonts.googleapis.com/earlyaccess/roundedmplus1c.css" rel="stylesheet" />
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <style media="screen">
-
-      body { background: #ECEFF1; color: rgba(0,0,0,0.87); font-family: Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
-      #message { background: white; max-width: 360px; margin: 100px auto 16px; padding: 32px 24px; border-radius: 3px; }
-      #message h2 { color: #ffa100; font-weight: bold; font-size: 16px; margin: 0 0 8px; }
-      #message h1 { font-size: 22px; font-weight: 300; color: rgba(0,0,0,0.6); margin: 0 0 16px;}
+      * {font-family: "Rounded Mplus 1c"; font-weight: 900;}
+      body { background: #ECEFF1; color: rgba(0,0,0,0.87); font-family: "Rounded Mplus 1c"; font-weight: 900; margin: 0; padding: 0; }
+      #message { background: white; max-width: 260px; margin: 100px auto 16px; padding: 32px 24px; border-radius: 3px; }
+      #message h2 { color: #8B572A; font-weight: bold; font-size: 16px; margin: 0 0 8px; }
+      #message h1 { font-size: 16px; font-weight: 300; color: rgba(0,0,0,0.6); margin: 0 0 16px;}
+      #message h1 a {color: #333; transition: 0.3s ease all; text-shadow: 0px 0px 0px #333;text-decoration: none }
+      #message h1 a:hover  {text-shadow: 0px 3px 10px #999; }
+      #message h1 a:active  {text-shadow: 0px 1px 2px #333; }
       #message p { line-height: 140%; margin: 16px 0 24px; font-size: 14px; }
-      #message a { display: block; text-align: center; background: #039be5; text-transform: uppercase; text-decoration: none; color: white; padding: 16px; border-radius: 4px; }
-      #message, #message a { box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); }
+      #message a#submit { transition: 0.3s ease all; display: block; text-align: center; background: #039be5; text-transform: uppercase; text-decoration: none; color: white; padding: 16px; border-radius: 4px; }
+      #message a#submit:hover  { box-shadow: 0 3px 9px rgba(0,0,0,0.3); transition: 0.1s ease all; display: block; text-align: center; background: #05acf7; text-transform: uppercase; text-decoration: none; color: white; padding: 16px; border-radius: 4px; }
+      #message a#submit:active  { box-shadow: 0px 0px 0px ; transition: 0.1s ease all; display: block; text-align: center; background: #028ad4; text-transform: uppercase; text-decoration: none; color: #EEE; padding: 16px; border-radius: 4px; }
+      #message, #message a#submit { box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); }
       #load { color: rgba(0,0,0,0.4); text-align: center; font-size: 13px; }
-      @media (max-width: 600px) {
-        body, #message { margin-top: 0; background: white; box-shadow: none; }
-        body { border-top: 16px solid #ffa100; }
+      textarea { 
+        font-family: "Rounded Mplus 1c"; 
+        font-weight: 900;
+        width: 260px;
+        height: 150px;
+        margin: 0 auto 10px;
+        border: 1px solid #CCC;
+        box-shadow: inset 0px 1px 3px #DDD;
+        background: #FFF; 
+        padding: 10px;
+        box-sizing: border-box;
+        border-radius: 10px;
+        display: block;
+        font-size: 16px;
       }
-
+      h2{ font-weight: 900 }
+      body, #message { margin-top: 0; background: white; box-shadow: none; }
+      body { border-top: 16px solid #8B572A; }
     </style>
   </head>
   <body>
     <div id="message">
-      <form>
-      <h2>Message</h2>
-      <textarea>You're seeing this because you've successfully setup Firebase Hosting. Now it's time to go build something extraordinary!</textarea>
-      <a target="_blank" href="https://firebase.google.com/docs/hosting/">Open Hosting Documentation</a>
-      </form>
+      <h2>Post your Pumpo about ... </h2>
+      <h1>
+        <a id="website"> </a>
+      </h1>
+      <textarea placeholder="Memo"></textarea>
+      <a href="#" id="submit">POST TO SLACK</a>
     </div>
-
     <script>
-      // document.addEventListener('DOMContentLoaded', function() {
-      //   // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-      //   // // The Firebase SDK is initialized and available here!
-      //   //
-      //   // firebase.auth().onAuthStateChanged(user => { });
-      //   // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
-      //   // firebase.messaging().requestPermission().then(() => { });
-      //   // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
-      //   //
-      //   // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-      //   try {
-      //     let app = firebase.app();
-      //     let features = ['auth', 'database', 'messaging', 'storage'].filter(feature => typeof app[feature] === 'function');
-      //     document.getElementById('load').innerHTML = `Firebase SDK loaded with ${features.join(', ')}`;
-      //   } catch (e) {
-      //     console.error(e);
-      //     document.getElementById('load').innerHTML = 'Error loading the Firebase SDK, check the console.';
-      //   }
-      // });
+      document.addEventListener('DOMContentLoaded', function() {
+        
+        function getQueryVariable(variable) {
+          var query = window.location.search.substring(1);
+          var vars = query.split('&');
+          for (var i = 0; i < vars.length; i++) {
+            var pair = vars[i].split('=');
+            if (decodeURIComponent(pair[0]) == variable) {
+              return decodeURIComponent(pair[1]);
+            }
+          }
+          console.log('Query variable %s not found', variable);
+        }
+        var title = getQueryVariable("title");
+        var t_url = getQueryVariable('url');
+
+        var website = document.querySelector("#website");
+        website.setAttribute('href', t_url); 
+        website.innerText = title;
+        document.querySelector("textarea").focus();
+        var submit_button = document.querySelector("#submit");
+        submit_button.addEventListener('click', function(){
+
+          var url = 'https://hooks.slack.com/services/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'
+          var content = document.querySelector("textarea").value;
+          var data = {
+              "attachments": [
+                  {
+                      "color": "#F8E71C",
+                      "text": content,
+                      "title": title,
+                      "title_link": t_url,
+                      "footer": "Pumpo",
+                      "footer_icon": "https://pumpo-server-side.firebaseapp.com/icon.png",
+                      "ts": parseInt(Date.now()/1000)
+                  }
+              ]
+          }
+          axios.post(url, JSON.stringify(data), {
+            withCredentials: false,
+            transformRequest: [(data, headers) => {
+              delete headers.post["Content-Type"]
+              return data
+            }]
+          }); 
+          document.querySelector("textarea").value = '';
+        });
+        
+        document.onkeydown = function(e) {
+          var key = e.which || e.keyCode;
+          if (e.metaKey && key == 13) {
+            submit_button.click();
+            return false;
+          }
+        };
+
+      });
     </script>
   </body>
 </html>
