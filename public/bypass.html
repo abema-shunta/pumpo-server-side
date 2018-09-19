@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Pumpo</title>
+    <title>Pumpo Configuration</title>
 
     <link href="https://fonts.googleapis.com/earlyaccess/roundedmplus1c.css" rel="stylesheet" />
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -16,7 +16,7 @@
       #message h1 a {color: #333; transition: 0.3s ease all; text-shadow: 0px 0px 0px #333;text-decoration: none }
       #message h1 a:hover  {text-shadow: 0px 3px 10px #999; }
       #message h1 a:active  {text-shadow: 0px 1px 2px #333; }
-      #message p { line-height: 140%; margin: 16px 0 24px; font-size: 14px; }
+      #message p { line-height: 140%; margin: 16px 0 24px; font-size: 14px; text-align: center}
       #message a#submit { transition: 0.3s ease all; display: block; text-align: center; background: #039be5; text-transform: uppercase; text-decoration: none; color: white; padding: 16px; border-radius: 4px; }
       #message a#submit:hover  { box-shadow: 0 3px 9px rgba(0,0,0,0.3); transition: 0.1s ease all; display: block; text-align: center; background: #05acf7; text-transform: uppercase; text-decoration: none; color: white; padding: 16px; border-radius: 4px; }
       #message a#submit:active  { box-shadow: 0px 0px 0px ; transition: 0.1s ease all; display: block; text-align: center; background: #028ad4; text-transform: uppercase; text-decoration: none; color: #EEE; padding: 16px; border-radius: 4px; }
@@ -39,25 +39,17 @@
       }
       h2{ font-weight: 900 }
       body, #message { margin-top: 0; background: white; box-shadow: none; }
+      body { border-top: 16px solid #8B572A; }
     </style>
   </head>
   <body>
     <div id="message">
-      <h2>Post your Pumpo about ... </h2>
-      <h1>
-        <a id="website" target="_blank"> </a>
-      </h1>
-      <textarea placeholder="Memo"></textarea>
-      <a href="#" id="submit">POST TO SLACK</a>
-      <span style="font-size: 8px; padding: 4px; line-height: 2px; color: #999;">
-        <b>ショートカット</b><br/>
-        Control+P : Pumpoを開く<br/>
-        Command+Enter : Slackへ投稿 <br/>
-      </span>
+      <h2> Slack の連携まであともう一歩です </h2>
+      <p id="message"> 連携を完了するために、この画面を閉じずに Pumpoのクローム拡張 を開いてください.</p>
     </div>
     <script>
       document.addEventListener('DOMContentLoaded', function() {
-        
+
         function getQueryVariable(variable) {
           var query = window.location.search.substring(1);
           var vars = query.split('&');
@@ -69,54 +61,6 @@
           }
           console.log('Query variable %s not found', variable);
         }
-        function closeParentWindow(){
-          window.parent.close();
-        }
-        var title = getQueryVariable("title");
-        var t_url = getQueryVariable('url');
-        var urlbase = getQueryVariable('urlbase');
-
-        var website = document.querySelector("#website");
-        website.setAttribute('href', t_url); 
-        website.innerText = title;
-        document.querySelector("textarea").focus();
-        var submit_button = document.querySelector("#submit");
-        submit_button.addEventListener('click', function(){
-
-          var url = urlbase;
-          var content = document.querySelector("textarea").value;
-          var data = {
-              "attachments": [
-                  {
-                      "color": "#F8E71C",
-                      "text": content,
-                      "title": title,
-                      "title_link": t_url,
-                      "footer": "Pumpo",
-                      "footer_icon": "https://pumpo-server-side.firebaseapp.com/icon.png",
-                      "ts": parseInt(Date.now()/1000)
-                  }
-              ]
-          }
-          axios.post(url, JSON.stringify(data), {
-            withCredentials: false,
-            transformRequest: [(data, headers) => {
-              delete headers.post["Content-Type"]
-              return data
-            }]
-          }).then(function (response) {
-            closeParentWindow();
-          }); 
-          document.querySelector("textarea").value = '';
-        });
-        
-        document.onkeydown = function(e) {
-          var key = e.which || e.keyCode;
-          if (e.metaKey && key == 13) {
-            submit_button.click();
-            return false;
-          }
-        };
 
       });
     </script>
